@@ -1,0 +1,40 @@
+$engine: 3
+$onesync: on
+
+name: INDONIUM
+version: 1.0.0
+author: Awaludin AR
+description: Bertahan Hidup dari Zombie, Bangun Crew bersama teman, Kalahkan Player Lain
+
+tasks:
+    # Base Core
+    - action: download_github
+      src: https://github.com/indonium/txAdminRecipe
+      ref: main
+      dest: ./tmp/indonium
+
+    - action: move_path
+      src: ./tmp/indonium/server.cfg
+      dest: ./server.cfg
+
+    # Prepare Databases
+    - action: connect_database
+    - action: query_database
+      file: ./tmp/indonium/indonium.sql
+
+    # STANDALONE
+    - action: download_github
+      src: https://github.com/citizenfx/cfx-server-data
+      subpath: resources
+      dest: ./resources/[cfx-default]
+      
+    - action: download_file
+      path: ./tmp/files/oxmysql-1.8.4.zip
+      url: https://github.com/overextended/oxmysql/releases/download/v1.8.4/oxmysql-v1.8.4.zip
+    - action: unzip
+      dest: ./resources/[standalone]
+      src: ./tmp/files/oxmysql-1.8.4.zip
+
+    # Clean up
+    - action: remove_path
+      path: ./tmp
